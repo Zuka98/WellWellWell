@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:gravity="center"
+
+
+    >
+    <ImageView
+        android:id="@+id/closePopup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close_black_24dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="7dp"
+        android:elevation="5dp"
+        android:layout_alignParentRight="true"
+        />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/White"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                >
+
+
+                <TextView
+                    android:id="@+id/titleTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                    android:textStyle="bold"
+                    android:textSize="19dp"
+
+                    android:text="Please input what you think your score should be below."
+                    />
+
+                <TextView
+                    android:id="@+id/selectedscore"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="0"
+                    android:textSize="40dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+
+                <Button
+                    android:id="@+id/zero"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/orange_button"
+                    android:textColor="@color/White"
+                    android:textSize="18dp"
+                    android:text="0"
+                    />
+
+                    <Button
+                        android:textSize="18dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+
+                        android:layout_marginStart="13dp"
+                        android:id="@+id/one"
+
+                        android:background="@drawable/orange_button"
+                        android:textColor="@color/White"
+                        android:text="1"
+                        />
+
+                    <Button
+                    android:id="@+id/two"
+                        android:layout_marginStart="13dp"
+                        android:textSize="18dp"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/orange_button"
+                    android:textColor="@color/White"
+                    android:text="2"
+                    />
+                    <Button
+                    android:id="@+id/three"
+                        android:layout_marginStart="13dp"
+                        android:textSize="18dp"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                    android:background="@drawable/orange_button"
+                    android:textColor="@color/White"
+                    android:text="3"
+                    />
+
+                    <Button
+                        android:id="@+id/four"
+                        android:layout_marginStart="13dp"
+                        android:textSize="18dp"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/orange_button"
+                        android:textColor="@color/White"
+                        android:text="4"
+                        />
+
+                    <Button
+                        android:id="@+id/five"
+                        android:layout_marginStart="13dp"
+                        android:textSize="18dp"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/orange_button"
+                        android:textColor="@color/White"
+                        android:text="5"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content">
+
+
+                    <Button
+                        android:id="@+id/six"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/orange_button"
+                        android:textColor="@color/White"
+                        android:text="6"
+                        android:textSize="18dp"
+
+                        />
+
+                    <Button
+                        android:layout_marginStart="13dp"
+                        android:id="@+id/seven"
+
+                        android:textSize="18dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+
+                        android:background="@drawable/orange_button"
+                        android:textColor="@color/White"
+                        android:text="7"
+                        />
+
+                    <Button
+                        android:id="@+id/eight"
+                        android:layout_marginStart="13dp"
+                        android:textSize="18dp"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/orange_button"
+                        android:textColor="@color/White"
+                        android:text="8"
+                        />
+                    <Button
+                        android:id="@+id/nine"
+                        android:layout_marginStart="13dp"
+                        android:textSize="18dp"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/orange_button"
+                        android:textColor="@color/White"
+                        android:text="9"
+                        />
+
+                    <Button
+                        android:id="@+id/ten"
+                        android:layout_marginStart="13dp"
+                        android:textSize="18dp"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/orange_button"
+                        android:textColor="@color/White"
+                        android:text="10"
+                        />
+
+
+
+                </LinearLayout>
+
+
+
+                <EditText
+                    android:visibility="invisible"
+                    android:id="@+id/inputfeedbackscore"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+
+
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/savefeedback"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+
+                        android:text="Save"
+                        android:textColor="@color/White"
+                        android:background="@drawable/orange_button"
+                        android:layout_gravity="center_horizontal"
+
+                        />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

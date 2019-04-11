@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+ <PreferenceCategory
+     android:key="user_category"
+     android:title="User"
+
+
+     >
+     <EditTextPreference
+         android:dialogTitle="Edit reference 1"
+         android:dialogMessage="Enter your refernece 1"
+         android:inputType="textCapWords"
+         android:key="reference1"
+         android:title="Edit Reference 1"
+
+
+         />
+
+     <EditTextPreference
+         android:dialogTitle="Edit reference 2"
+         android:dialogMessage="Enter your refernece 2"
+         android:inputType="textCapWords"
+         android:key="reference2"
+         android:title="Edit Reference 2"
+         android:summary="some reference2"
+
+         />
+
+     <Preference
+         android:selectable="false"
+         android:enabled="true"
+         android:key="postcode"
+         android:title="Update Postcode"
+         android:summary="Click to select your latest postcode"
+         />
+
+ </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Privacy">
+        <SwitchPreference
+            android:editable="true"
+            android:key="anonyshare"
+            android:title="Enable anonymously data sharing"
+            android:summary="Allow app to send score anonymously to database weekly"
+></SwitchPreference>
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="General"
+        >
+    <SwitchPreference
+        android:editable="true"
+        android:key="notification"
+        android:title="Enable notifications"
+        android:summary="Allow app to push notification"
+        ></SwitchPreference>
+
+        <RingtonePreference
+            android:key="notification_ringtone"
+            android:title="Notification ringtone"
+            android:summary="Choose notification ringtone"
+            android:ringtoneType="notification"
+            android:dependency="notification"
+            ></RingtonePreference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
+
