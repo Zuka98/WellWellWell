@@ -63,6 +63,7 @@ import me.everything.providers.android.telephony.Sms;
 import me.everything.providers.android.telephony.TelephonyProvider;
 import me.everything.providers.core.Data;
 
+
 public class MainActivity extends AppCompatActivity {
 
     public static Button viewstats;
@@ -213,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                 String checkalarm = preferences.getString("alarmstatus", "");
 
 
-                if (checkalarm.equals("on") && isMyServiceRunning(TheService.class)) {
+                if (checkalarm.equals("on") && isMyServiceRunning(ThePedometerService.class)) {
 
                     try{
                         insertDummyData();
@@ -320,14 +321,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         int hasFilesWritePermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+
         String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        requestPermissions(permissions, STORAGE_CODE);
+        //requestPermissions(permissions, STORAGE_CODE);
 
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
            // Toast.makeText(getApplicationContext(), "Enabling permission to export data as PDF document.", Toast.LENGTH_LONG).show();
             //String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
             requestPermissions(permissions, STORAGE_CODE);
         }
+
+
+
+
 
 
         final String[] NECESSARY_PERMISSIONS = new String[] {Manifest.permission.GET_ACCOUNTS };
@@ -349,11 +356,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (hasSMSPermission != PackageManager.PERMISSION_GRANTED && hasCallLogPermission2 != PackageManager.PERMISSION_GRANTED && hasCallLogPermission != PackageManager.PERMISSION_GRANTED && hasSMSReceivePermission != PackageManager.PERMISSION_GRANTED && hasUsageStatsPermission != PackageManager.PERMISSION_GRANTED && hasFilesPermission != PackageManager.PERMISSION_GRANTED) {
-            Intent intent = new Intent(this, StartPage.class);
+            Intent intent = new Intent(this, StartActivity.class);
             startActivity(intent);
         }
         if (queryUsageStats.size() == 0) {
-            Intent intent = new Intent(this, StartPage.class);
+            Intent intent = new Intent(this, StartActivity.class);
             startActivity(intent);
         }
 
@@ -441,19 +448,19 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Start monitoring in order to view stats!", Toast.LENGTH_LONG).show();
             return;
         }
-        Intent intent = new Intent(this, LiveSensors.class);
+        Intent intent = new Intent(this, LiveSensorsActivity.class);
         //intent.putExtra(UPDATE_TEXT, countedSteps);
         editor.putInt("freshsteps",Integer.parseInt(countedSteps));
         editor.apply();
 
         Log.d("Counted steps: ", countedSteps);
 
-        if (isMyServiceRunning(TheService.class) == true) {
+        if (isMyServiceRunning(ThePedometerService.class) == true) {
             old = preferences.getInt("oldstep", 0);
             Log.d("Old value is now:", String.valueOf(old));
 
         }
-        else if (isMyServiceRunning(TheService.class) == false) {
+        else if (isMyServiceRunning(ThePedometerService.class) == false) {
             Toast.makeText(MainActivity.this, "Start monitoring in order to view stats!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -469,7 +476,7 @@ public class MainActivity extends AppCompatActivity {
         scoreView = (TextView) findViewById(R.id.score);
         denominator = (TextView) findViewById(R.id.denominator);
         alarmcheck = preferences.getString("alarmstatus", "");
-        if (alarmcheck.equals("on") && isMyServiceRunning(TheService.class)) {
+        if (alarmcheck.equals("on") && isMyServiceRunning(ThePedometerService.class)) {
             stopServiceBtn.setVisibility(View.VISIBLE);
             startServiceBtn.setVisibility(View.INVISIBLE);
             scoreMsg.setVisibility(View.VISIBLE);
@@ -509,7 +516,7 @@ public class MainActivity extends AppCompatActivity {
         final List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, beginCal.getTimeInMillis(), endCal.getTimeInMillis());
         Intent intent;
         if (queryUsageStats.size() == 0) {
-            intent = new Intent(this, StartPage.class);
+            intent = new Intent(this, StartActivity.class);
             startActivity(intent);
         }
 
@@ -526,7 +533,7 @@ public class MainActivity extends AppCompatActivity {
                 scoreView.setTextSize(145);
                 waysinfo.setVisibility(View.VISIBLE);
                 setProgressColours(scoreint);
-            if (isMyServiceRunning(TheService.class)) {
+            if (isMyServiceRunning(ThePedometerService.class)) {
                 startServiceBtn.setVisibility(View.INVISIBLE);
                 stopServiceBtn.setVisibility(View.VISIBLE);
             }
@@ -579,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) { //if the user clicks 'stop monitoring'
                 if (serviceOn) {
                     unregisterReceiver(broadcastReceiver);
-                    stopService(new Intent(getBaseContext(), TheService.class));
+                    stopService(new Intent(getBaseContext(), ThePedometerService.class));
                     editor.putString("alarmstatus", "off");
                     editor.apply();
                     serviceOn = false;
@@ -606,7 +613,7 @@ public class MainActivity extends AppCompatActivity {
         }
         */
 
-        if (isMyServiceRunning(TheService.class) == true) {
+        if (isMyServiceRunning(ThePedometerService.class) == true) {
             startStepCount();
         }
 
@@ -631,9 +638,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startStepCount(){
-        Intent intent = new Intent(MainActivity.this,TheService.class);
+        Intent intent = new Intent(MainActivity.this, ThePedometerService.class);
         ContextCompat.startForegroundService(this, intent);
-        registerReceiver(broadcastReceiver, new IntentFilter(TheService.BROADCAST_ACTION));
+        registerReceiver(broadcastReceiver, new IntentFilter(ThePedometerService.BROADCAST_ACTION));
         serviceOn = true;
     }
 
@@ -725,7 +732,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (isMyServiceRunning(TheService.class) == true) {
+        if (isMyServiceRunning(ThePedometerService.class) == true) {
             if (countedSteps != null) {
                 old = preferences.getInt("oldstep", 0);
                 int newcount = Integer.parseInt(countedSteps);
@@ -746,6 +753,9 @@ public class MainActivity extends AppCompatActivity {
     public void showFeedBack() {
         //final TextView textViewtmp = (TextView) findViewById(R.id.text);
         Cursor res = myDb.getLastLine();
+        Cursor res1 = myDb.getAllData();
+
+
         epicDialog1.setContentView(R.layout.epic_yesnofeedback);
 
         closePopup = (ImageView) epicDialog1.findViewById(R.id.closePopup);
@@ -782,12 +792,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        closePopup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                epicDialog1.dismiss();
-            }
-        });
+
 
         thezero.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -873,7 +878,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         int sss;
+
+        if (res1.getCount() == 0){
+            sss = res1.getInt(8);
+
+
+            editor.putString("score", String.valueOf(sss));
+            editor.putInt("original_prediction", sss);
+            editor.apply();
+
+            tvScoreDisplay.setText(String.valueOf(sss));
+
+            //scoreView = (TextView) findViewById(R.id.score);
+
+
+            //int thefeedbackscore = res.getInt(8);
+
+        }
+        else{
         while (res.moveToNext()) {
 
 
@@ -889,14 +914,83 @@ public class MainActivity extends AppCompatActivity {
             //scoreView = (TextView) findViewById(R.id.score);
 
 
-            int thefeedbackscore = res.getInt(8);
+            //int thefeedbackscore = res.getInt(8);
 
         }
+        }
+
 
 
         final int prediction = preferences.getInt("original_prediction",0);
         scoreView.setText(String.valueOf(prediction));
 
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+                boolean insertedFB = false;
+
+
+                Cursor res2 = myDb.getDataToClassify();
+                while (res2.moveToNext()) {
+                    String data = String.valueOf(res2.getInt(0)) + "," + String.valueOf(res2.getInt(1)) + "," + String.valueOf(res2.getFloat(2)) + "," + String.valueOf(res2.getInt(3)) + "," + String.valueOf(res2.getInt(4)) + "," + String.valueOf(res2.getFloat(5)) + "," + String.valueOf(res2.getFloat(6)) + "," + String.valueOf(res2.getFloat(7));
+                    try {
+                        Log.v("Writing this: ", data + " " + "to text file");
+                        addnewinfo(String.valueOf(prediction), prediction, data);
+                        Toast.makeText(MainActivity.this, String.valueOf(prediction), Toast.LENGTH_LONG).show();
+
+
+                    } catch (Exception e) {
+                        //Toast.makeText(MainActivity.this, "Unable to record feedback", Toast.LENGTH_LONG).show();
+                        Log.v("newFeedback:", "not written to file");
+
+
+                    }
+                }
+
+
+                scoreView = (TextView) findViewById(R.id.score);
+                scoreView.setTextSize(145);
+                scoreView.setText(String.valueOf(prediction));
+                insertedFB = true;
+
+                editor.putString("score", String.valueOf(prediction));
+                editor.apply();
+
+
+                denominator = (TextView) findViewById(R.id.denominator);
+                denominator.setVisibility(View.VISIBLE);
+                moreinfo.setVisibility(View.VISIBLE);
+
+                circle.setVisibility(View.INVISIBLE);
+                setProgressColours(prediction);
+                waysinfo.setVisibility(View.VISIBLE);
+                scoreMsg.setVisibility(View.VISIBLE);
+                if (privacySwitch.isChecked()) {
+                    //String filteredresponse = dfFilter(choices, choice);
+                    //textViewtmp.setText("You chose " + filteredresponse);
+                    myDb.insertFeedback(prediction, String.valueOf(prediction));
+                    postRequest(findViewById(android.R.id.content));
+
+
+                } else {
+                    //textViewtmp.setText("You chose " + choice);
+                    myDb.insertFeedback(prediction, String.valueOf(prediction));
+                }
+
+
+                if(insertedFB){
+                    epicDialog1.dismiss();}
+
+
+
+
+                epicDialog1.dismiss();
+            }
+        });
 
         btnSaveFeedback.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -916,7 +1010,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (!isInteger(editTextValue.trim())) {
                         Toast.makeText(getApplicationContext(), "Please input integer numbers only.", Toast.LENGTH_SHORT).show();
 
-                    } else if (Integer.parseInt(editTextValue.trim()) > 0 && Integer.parseInt(editTextValue.trim()) <= 10) {
+                    } else if (Integer.parseInt(editTextValue.trim()) >= 0 && Integer.parseInt(editTextValue.trim()) <= 10) {
 
                         //if(isInteger(editTextValue.trim())) {
 
@@ -927,7 +1021,7 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 Log.v("Writing this: ", data + " " + "to text file");
                                 addnewinfo(editTextValue.trim(), prediction, data);
-                                Toast.makeText(MainActivity.this, editTextValue.trim(), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(MainActivity.this, editTextValue.trim(), Toast.LENGTH_LONG).show();
 
 
                             } catch (Exception e) {
@@ -944,6 +1038,17 @@ public class MainActivity extends AppCompatActivity {
 
                         editor.putString("score", editTextValue.trim());
                         editor.apply();
+
+
+
+                        insertScore(Integer.parseInt(editTextValue.trim()));
+
+
+
+
+
+
+
 
 
                         denominator = (TextView) findViewById(R.id.denominator);
@@ -979,7 +1084,14 @@ public class MainActivity extends AppCompatActivity {
 
                         epicDialog2.dismiss();
                         epicDialog1.dismiss();
-                        scoreView.setText(editTextValue.trim());
+
+                        if (Integer.parseInt(editTextValue.trim()) == 10) {
+                            scoreView.setTextSize(120);
+                            scoreView.setText("10");
+                            scoreView.setTextScaleX(0.85f);
+                        }
+                        else {
+                        scoreView.setText(editTextValue.trim());}
 
                     }
 
@@ -1020,6 +1132,8 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     }
+
+
                     scoreView = (TextView) findViewById(R.id.score);
                     scoreView.setTextSize(145);
                     scoreView.setText(String.valueOf(prediction));
@@ -1134,7 +1248,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void viewHistory(View view) {
 
-        Intent intent = new Intent(this, StatisticsPage.class);
+        Intent intent = new Intent(this, StatisticsActivity.class);
         startActivity(intent);
 
 
@@ -1149,7 +1263,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                myDb.insertData(getRandomNumberInRange(0,100000), getRandomNumberInRange(0,12), getRandomNumberInRange(0,260), getRandomNumberInRange(0,120), getRandomNumberInRange(0,20), getRandomNumberInRange(0,34), getRandomNumberInRange(0,29000), getRandomNumberInRange(0,2300));
+                myDb.insertData(getRandomNumberInRange(0,80000), getRandomNumberInRange(0,12), getRandomNumberInRange(0,260), getRandomNumberInRange(0,120), getRandomNumberInRange(0,20), getRandomNumberInRange(0,34), getRandomNumberInRange(0,29000), getRandomNumberInRange(0,2600));
                 Intent toAlarm = new Intent("ALARM_INTENT");
                 LocalBroadcastManager.getInstance(con).sendBroadcast(toAlarm);
                 editor.putString("score", "-1"); //this should be in the insertdata method
@@ -1311,6 +1425,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
+    private void insertScore(int score){
+        int week = (int) myDb.getThisWeekNumber();
+        myDb.insertScore(String.valueOf(week), score);
+
+    }
     public int addnewinfo(String feedback, int score, String data) throws Exception{
         int newscore = 0;
         try {
@@ -1384,7 +1505,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void waysDetail(View view) { //code for the dialog box that will pop up if users want a reminder of what the 5 ways are
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        String message = "The 5 Ways to Wellbeing are a set of steps that we can all take to improve our mental wellbeing. They are as follows: \n\nConnect - with people around you, including friends and family \nBe Active - take a walk, go cycling, go to the gym, etc... \nKeep Learning - for example, pick up a hobby or look up a recipe \nGive To Others - anything from a small act of kindness like a smile, to something like volunteering \nBe Mindful - appreciate your experiences and the world around you, and be more aware of your thoughts and feelings \n\nYour weekly score rates the extent to which you have followed these steps during the week, based on your phone usage. \n\n This app tracks the following: steps taken per week, outgoing calls and texts per week, quantity of photos and videos taken per week, and time spent in calls, using Google searches, and on social media apps.";
+        String message = "The 4 Ways to Wellbeing are a set of steps that we can all take to improve our mental wellbeing. They are as follows: \n\nConnect - with people around you, including friends and family \nBe Active - take a walk, go cycling, go to the gym, etc... \nKeep Learning - for example, pick up a hobby or look up a recipe  \nBe Mindful - appreciate your experiences and the world around you, and be more aware of your thoughts and feelings \n\nYour weekly score rates the extent to which you have followed these steps during the week, based on your phone usage. \n\n This app tracks the following: steps taken per week, outgoing calls and texts per week, time spent in cameras, quantity of photos and videos taken per week, and time spent in calls, using browsers, and on social media apps.";
         dialog.setMessage(message);
             dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override

@@ -10,26 +10,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -271,10 +257,10 @@ public class SettingsActivity extends AppCompatActivity  {
 
                 new SimpleSearchDialogCompat(SettingsActivity.this, "Select your new postcode",
                         "What are you looking for?", null, createSampleData(),
-                        new SearchResultListener<SampleSearchModel>() {
+                        new SearchResultListener<SearchModelForPostcode>() {
                             @Override
                             public void onSelected(BaseSearchDialogCompat dialog,
-                                                   SampleSearchModel item, int position) {
+                                                   SearchModelForPostcode item, int position) {
 
                                 SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                                 editor.putString("postcode", item.getTitle());
@@ -358,10 +344,10 @@ public class SettingsActivity extends AppCompatActivity  {
     }
 
 
-    private ArrayList<SampleSearchModel> createSampleData(){
-        ArrayList<SampleSearchModel> items = new ArrayList<>();
+    private ArrayList<SearchModelForPostcode> createSampleData(){
+        ArrayList<SearchModelForPostcode> items = new ArrayList<>();
         for (String e : postcodes) {
-            items.add(new SampleSearchModel(e));
+            items.add(new SearchModelForPostcode(e));
         }
 
         return items;

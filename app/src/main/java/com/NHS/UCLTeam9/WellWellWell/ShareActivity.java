@@ -1,7 +1,6 @@
 package com.NHS.UCLTeam9.WellWellWell;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -63,6 +62,8 @@ public class ShareActivity extends AppCompatActivity {
     TextView latestScore;
     ImageView closePopup, pdfimg;
 
+    SharedPreferences preferences;
+
 
     static LineChart chart;
     LineDataSet set;
@@ -74,11 +75,17 @@ public class ShareActivity extends AppCompatActivity {
     private static final int STORAGE_CODE = 1000;
     final private String MY_PREFS_NAME = new String("sharepostcode");
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTitle("Share Score");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
+
+        preferences = this.getSharedPreferences("MyPreferences", this.MODE_PRIVATE);
+        //editor = preferences.edit();
 
 
 
@@ -109,15 +116,12 @@ public class ShareActivity extends AppCompatActivity {
         }
         else
         {
-            Cursor fm = myDb.getFeedbackMessage();
-            //feedback.moveToFirst();
-            fm.moveToLast();
-            Cursor scoreT = myDb.getLastLine();
-            scoreT.moveToFirst();
-            //latestScore.setText( String.valueOf(scoreT.getInt(8)));
-            latestScore.setText(fm.getString(0));
+            Cursor res=myDb.getLastLine();
+            while(res.moveToNext()) {
 
+                latestScore.setText(String.valueOf(res.getInt(8)));
 
+            }
         }
 
        // res.getInt(8)
@@ -141,7 +145,7 @@ public class ShareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Check if permission was granted
                 String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                requestPermissions(permissions, STORAGE_CODE);
+                //requestPermissions(permissions, STORAGE_CODE);
 
                 if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                     Toast.makeText(getApplicationContext(), "Enabling permission to export data as PDF document.", Toast.LENGTH_LONG).show();
@@ -228,6 +232,7 @@ public class ShareActivity extends AppCompatActivity {
         myDb = new DatabaseHelper(this);
         //latestScore = (TextView) findViewById(R.id.latestScoreToShare);
 
+        Cursor res = myDb.getLastLine();
 
 
         if (myDb.isdbempty()){
@@ -235,9 +240,15 @@ public class ShareActivity extends AppCompatActivity {
         }
         else
         {
-            Cursor scoreT = myDb.getScore();
-            scoreT.moveToFirst();
-            latestScore.setText( String.valueOf(scoreT.getInt(0)));}
+            while(res.moveToNext()) {
+
+
+                //latestScore.setText( String.valueOf(scoreT.getInt(8)));
+                latestScore.setText(String.valueOf(res.getInt(8)));
+
+            }
+
+        }
 
 
 
@@ -247,15 +258,23 @@ public class ShareActivity extends AppCompatActivity {
     private void maketxt(){
 
         if (!myDb.isdbempty()) {
-            Cursor res = myDb.getLastLine();
-            res.moveToFirst();
+
 
             Cursor score = myDb.getScore();
-            Cursor feedback = myDb.getFeedback();
-            Cursor fm = myDb.getFeedbackMessage();
-            feedback.moveToFirst();
-            fm.moveToLast();
+
             score.moveToLast();
+
+
+            int predictedScore = preferences.getInt("original_prediction", 0);
+
+            int thefeedback = 0;
+            Cursor res=myDb.getLastLine();
+            while(res.moveToNext()) {
+
+                thefeedback=res.getInt(8);
+
+            }
+
 
 
             try {
@@ -282,11 +301,12 @@ public class ShareActivity extends AppCompatActivity {
 
 
                 writer.append("Week Number:" + String.valueOf(myDb.getThisWeekNumber()) + "\n");
-                writer.append("Feedback Score:" + fm.getString(0) + "\n");
-                int feedbackScore = Integer.parseInt(fm.getString(0));
+                writer.append("Predicted Score:"+predictedScore);
+
+                writer.append("Feedback Score:" + thefeedback + "\n");
 
                 //writer.append("Feedback Score:"+feedbackScore+"\n");
-                writer.append("Error rate:" + String.valueOf(abs(score.getInt(0) - feedbackScore) * 100 / score.getInt(0) + "%\n"));
+                writer.append("Error rate:" + String.valueOf(abs(predictedScore - thefeedback) * 100 / predictedScore + "%\n"));
 
 
                 writer.flush();
@@ -472,34 +492,50 @@ public class ShareActivity extends AppCompatActivity {
         //CREATE POP UP MADE NOW NEED NO FILE TO CREATE POPUP
         Cursor res;
         if(!myDb.isdbempty()) {
-            res = myDb.getLastLine();//decide whether put cursor outside
-            res.moveToFirst();
-            Cursor score = myDb.getScore();
-            Cursor feedback = myDb.getFeedback();
-            Cursor fm = myDb.getFeedbackMessage();
-            feedback.moveToLast();
-            fm.moveToLast();
-            score.moveToLast();
+
+
+
+
+            int thefeedback = 0;
+            res=myDb.getLastLine();
+            while(res.moveToNext()) {
+
+                thefeedback=res.getInt(8);
+
+            }
             TemplatePDF templatePDF = new TemplatePDF(getApplicationContext());
             templatePDF.openDocument();
 
+
+            int predictedScore = preferences.getInt("original_prediction", 0);
+
+
+
             String timeStamp = new SimpleDateFormat("dd:MM:yyyy").format(Calendar.getInstance().getTime());
             templatePDF.addEmphasizedSubject("Date:", timeStamp);
-            templatePDF.addEmphasizedSubject("Reference 1:",nhs);
-            templatePDF.addEmphasizedSubject("Reference 2:",emis);
+            templatePDF.addEmphasizedSubject("Reference 1:",emis);
+            templatePDF.addEmphasizedSubject("Reference 2:",nhs);
             templatePDF.addEmphasizedSubject("Postcode:",postcode);
             templatePDF.addEmphasizedSubject("Week Number:",String.valueOf(myDb.getThisWeekNumber()));
-            templatePDF.addEmphasizedSubject("Predicted Score:",String.valueOf(res.getInt(8)));
+            //templatePDF.addEmphasizedSubject("Predicted Score:",String.valueOf(res.getInt(8)));
+            templatePDF.addEmphasizedSubject("Predicted Score:",String.valueOf(predictedScore));
+
+
+
+
             //templatePDF.addEmphasizedSubject("Feedback Message:",fm.getString(0));
 
 
             //int feedbackScore = feedbackCounter(fm.getString(0),res.getInt(8));
-            int feedbackScore = Integer.parseInt(fm.getString(0));
+            //int feedbackScore = Integer.parseInt(fm.getString(0));
 
 
-            templatePDF.addEmphasizedSubject("Feedback:",String.valueOf(feedbackScore));
-            templatePDF.addEmphasizedSubject("Error Rate:", String.valueOf(abs(score.getInt(0)- feedbackScore)*100/score.getInt(0) + "%"));
-            templatePDF.addSubTitle("Score History Chart:");
+            templatePDF.addEmphasizedSubject("Feedback:",String.valueOf(thefeedback));
+            //templatePDF.addEmphasizedSubject("Error Rate:", String.valueOf(abs(score.getInt(0)- feedbackScore)*100/score.getInt(0) + "%"));
+            templatePDF.addEmphasizedSubject("Error Rate:", String.valueOf(abs(predictedScore- thefeedback)*100/predictedScore + "%"));
+
+
+            templatePDF.addSubTitle("Feedback Score History Chart:");
             templatePDF.addImage(makeChart());
             templatePDF.closeDocu();
             ShowCreatePDFPopup(templatePDF.getFileName());
@@ -510,8 +546,8 @@ public class ShareActivity extends AppCompatActivity {
             templatePDF.openDocument();
             String timeStamp = new SimpleDateFormat("dd:MM:yyyy").format(Calendar.getInstance().getTime());
             templatePDF.addEmphasizedSubject("Date:", timeStamp);
-            templatePDF.addEmphasizedSubject("Reference 1:",nhs);
-            templatePDF.addEmphasizedSubject("Reference 2:",emis);
+            templatePDF.addEmphasizedSubject("Reference 1:",emis);
+            templatePDF.addEmphasizedSubject("Reference 2:",nhs);
             templatePDF.addEmphasizedSubject("Postcode:",postcode);
             templatePDF.addEmphasizedSubject("Week Number:",String.valueOf(0));
             templatePDF.addEmphasizedSubject("Score:",String.valueOf("Not Scores Recorded!"));
@@ -646,7 +682,7 @@ public class ShareActivity extends AppCompatActivity {
     }
 
     public void viewStats(View view) {
-        Intent intent = new Intent(this, LiveSensors.class);
+        Intent intent = new Intent(this, LiveSensorsActivity.class);
         startActivity(intent);
     }
 
@@ -656,7 +692,7 @@ public class ShareActivity extends AppCompatActivity {
         //startActivity(intent);
     }
     public void viewHistory(View view) {
-        Intent intent = new Intent(this, StatisticsPage.class);
+        Intent intent = new Intent(this, StatisticsActivity.class);
         startActivity(intent);
     }
 }

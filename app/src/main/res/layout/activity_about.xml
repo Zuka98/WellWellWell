@@ -206,7 +206,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_margin="20dp"
-                        android:text="The app is designed around the '5 Ways to Wellbeing'. This is a framework for better mental health. The app makes predictions by monitoring your usage of social media apps, search engines and data from your phone's pedometer."
+                        android:text="The app is designed around the '4 Ways to Wellbeing'. This is a framework for better mental health. The app makes predictions by monitoring your usage of social media apps, search engines and data from your phone's pedometer."
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="@+id/textView19"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -223,7 +223,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:text="What is 5 ways to wellbeing?"
+                android:text="What is 4 ways to wellbeing?"
                 android:textAlignment="center"
                 android:textColor="@color/Black"
                 android:textSize="24sp"
@@ -245,7 +245,7 @@
                     android:layout_margin="20dp"
                     android:layout_marginEnd="50dp"
 
-                    android:text="The 5 Ways to Wellbeing are a set of steps that we can all take to improve our mental wellbeing. They are as follows: \n\nConnect - with people around you, including friends and family \nBe Active - take a walk, go cycling, go to the gym, etc... \nKeep Learning - for example, pick up a hobby or look up a recipe \nGive To Others - anything from a small act of kindness like a smile, to something like volunteering \nBe Mindful - appreciate your experiences and the world around you, and be more aware of your thoughts and feelings \n\nYour weekly score rates the extent to which you have followed these steps during the week, based on your phone usage. \n\n This app tracks the following: steps taken per week, outgoing calls and texts per week, quantity of photos and videos taken per week, and time spent in calls, using Google searches, and on social media apps."
+                    android:text="The 4 Ways to Wellbeing are a set of steps that we can all take to improve our mental wellbeing. They are as follows: \n\nConnect - with people around you, including friends and family \nBe Active - take a walk, go cycling, go to the gym, etc... \nKeep Learning - for example, pick up a hobby or look up a recipe \nBe Mindful - appreciate your experiences and the world around you, and be more aware of your thoughts and feelings \n\nYour weekly score rates the extent to which you have followed these steps during the week, based on your phone usage. \n\n This app tracks the following: steps taken per week, outgoing calls and texts per week, time spent in cameras, quantity of photos and videos taken per week, and time spent in calls, using browsers, and on social media apps."
                     android:textSize="16sp" />
 
                 <TextView
@@ -255,8 +255,7 @@
                     android:layout_margin="10dp"
                     android:gravity="left"
                     android:onClick="launchNHSWebsite"
-                    android:text=" Click here to learn more about 5 ways to wellbeing \n\n\n"
-                    android:textAlignment="textStart"
+                    android:text=" > Click here to learn more about 4 ways to wellbeing \n\n\n\n"
                     android:textColor="@color/colorBlue"
                     android:textSize="15dp" />
 

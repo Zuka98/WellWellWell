@@ -13,7 +13,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         // BOOT_COMPLETED” start Service
         if (intent.getAction().equals(ACTION)) {
             //Service
-            Intent serviceIntent = new Intent(context, TheService.class);
+            Intent serviceIntent = new Intent(context, ThePedometerService.class);
             ContextCompat.startForegroundService(context, serviceIntent);
         }
     }

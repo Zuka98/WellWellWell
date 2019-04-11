@@ -31,7 +31,7 @@ public class MainActivityTest {
         Button startButton = (Button) activity.findViewById(R.id.startmonitoring);
         assertNotNull("Button was not found!", startButton);
         startButton.performClick();
-        Intent expectedIntent = new Intent(activity, TheService.class);
+        Intent expectedIntent = new Intent(activity, ThePedometerService.class);
         ShadowActivity shadowActivity = Shadows.shadowOf(activity);
         Intent actualIntent = shadowActivity.getNextStartedActivity();
         assertTrue(actualIntent.filterEquals(expectedIntent));
@@ -52,7 +52,7 @@ public class MainActivityTest {
         startButton.performClick();
         stopButton.performClick();
 
-        assertFalse("Pedometer service still running!", activity.isMyServiceRunning(TheService.class));
+        assertFalse("Pedometer service still running!", activity.isMyServiceRunning(ThePedometerService.class));
 
         assertEquals("Stop monitoring button still visible", View.INVISIBLE, stopButton.getVisibility());
         assertEquals("Start button still invisible", View.VISIBLE, startButton.getVisibility());
@@ -67,7 +67,7 @@ public class MainActivityTest {
         startButton.performClick();
         Button liveWeekButton = (Button) activity.findViewById(R.id.home);
         liveWeekButton.performClick();
-        Intent expectedIntent = new Intent(activity, LiveSensors.class);
+        Intent expectedIntent = new Intent(activity, LiveSensorsActivity.class);
         ShadowActivity shadowActivity = Shadows.shadowOf(activity);
         Intent actualIntent = shadowActivity.getNextStartedActivity();
         assertTrue(actualIntent.filterEquals(expectedIntent));
@@ -82,7 +82,7 @@ public class MainActivityTest {
 
         Button liveWeekButton = (Button) activity.findViewById(R.id.button2);
         liveWeekButton.performClick();
-        Intent expectedIntent = new Intent(activity, StatisticsPage.class);
+        Intent expectedIntent = new Intent(activity, StatisticsActivity.class);
 
         ShadowActivity shadowActivity = Shadows.shadowOf(activity);
         Intent actualIntent = shadowActivity.getNextStartedActivity();

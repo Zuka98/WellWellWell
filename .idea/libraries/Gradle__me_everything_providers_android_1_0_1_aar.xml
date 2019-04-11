@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: me.everything:providers-android:1.0.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/providers-android-1.0.1.aar/94a0043a9562059dc3715ff571a2d641/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/providers-android-1.0.1.aar/94a0043a9562059dc3715ff571a2d641/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.everything/providers-android/1.0.1/d4821295529045ff1776293f8f17786f92da9bab/providers-android-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

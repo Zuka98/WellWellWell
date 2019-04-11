@@ -18,11 +18,11 @@ import static org.junit.Assert.assertTrue;
 @Config(sdk = Build.VERSION_CODES.O_MR1)
 public class PermissionsTest {
 
-    private PermissionsPage activity;
+    private PermissionsActivity activity;
     @Test
     public void usageStatsClickTester(){ //checking an intent is launched from the 'View Score History' button
 
-        activity = Robolectric.setupActivity(PermissionsPage.class);
+        activity = Robolectric.setupActivity(PermissionsActivity.class);
         Button launcher = (Button) activity.findViewById(R.id.statsenable);
         launcher.performClick();
         Intent expectedIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
